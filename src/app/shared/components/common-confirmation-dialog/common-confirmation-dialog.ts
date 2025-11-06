@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { ApiService } from '../../services/api/api-service';
-import { SnackBarService } from '../../services/snackBar/snack-bar-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { SnackBarService } from '../../services/snackBar/snack-bar-service';
 
 
 @Component({
@@ -47,7 +47,7 @@ export class CommonConfirmationDialog {
       },
       (err: any) => {
         this.isLoading = false;
-        this.snackBar.error(err?.error?.Message || 'Something went wrong');
+        this.snackBar.error(err?.error?.message || 'Something went wrong');
       }
     );
   }

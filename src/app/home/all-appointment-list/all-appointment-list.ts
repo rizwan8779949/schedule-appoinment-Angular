@@ -11,8 +11,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CommonConfirmationDialog } from '../../shared/components/common-confirmation-dialog/common-confirmation-dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { select, Store } from '@ngrx/store';
-import { userMgmtInitial } from '../../shared/ngrx/allUserMgmt/user-mgmt.actions';
-import { userMgmtError, userMgmtLoading, userMgmtSelector } from '../../shared/ngrx/allUserMgmt/user-mgmt.selectors';
+import { SnackBarService } from '../../shared/services/snackBar/snack-bar-service';
 
 @Component({
   selector: 'app-all-users-list',
@@ -23,66 +22,52 @@ import { userMgmtError, userMgmtLoading, userMgmtSelector } from '../../shared/n
     MatCardModule,
     MatTableModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './all-appointment-list.html',
   styleUrl: './all-appointment-list.scss',
 })
-export class AllAppoinmentList implements OnInit, OnDestroy {
- dataSourceAppoinmentList = new MatTableDataSource<any>();
-  displayedColumns = ['username', 'email', 'jobRole', 'action'];
+export class AllAppoinmentList implements OnInit {
+  dataSourceAppoinmentList = new MatTableDataSource<any>();
+  displayedColumns = ['appointmentID', 'patientName', 'patientContact', 'doctorName','doctorContact','appointmentDate','status','action'];
 
   isLoading = false;
-  loading$!: Observable<boolean>;
-  error$!: Observable<string | null>;
-
-  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private store: Store
+    private api: ApiService,
+    private snackBarService: SnackBarService
   ) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(userMgmtInitial());
+  ngOnInit(): void {}
 
-    this.store
-      .pipe(select(userMgmtSelector), takeUntil(this.destroy$))
-      .subscribe((users) => {
-        this.dataSourceAppoinmentList.data = users ?? [];
-      });
-
-    this.store
-      .pipe(select(userMgmtLoading), takeUntil(this.destroy$))
-      .subscribe((loading) => {
-        this.isLoading = loading;
-      });
-
-    this.error$ = this.store.pipe(select(userMgmtError));
+  getAllAppoinments() {
+    this.dataSourceAppoinmentList.data = [];
+    this.isLoading = true;
+    this.api.commonGetMethod('appoinments/getAllAppoinments', {}).subscribe(
+      (res) => {
+        this.dataSourceAppoinmentList.data = res?.data;
+        this.isLoading = false;
+      },
+      (err: any) => {
+        this.isLoading = false;
+      }
+    );
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
- 
-
-  deleteUserConfirmDialog(deleteUserObject: any) {
+  assignAppoinmentsConfirmDialog(appoinmentsObject: any) {
     const dialogRef = this.dialog.open(CommonConfirmationDialog, {
       disableClose: true,
-      data:
-      {
-        dialogType:'userDashboard',
-        dialogData:deleteUserObject
-      }
-      ,
+      data: {
+        dialogType: 'userDashboard',
+        dialogData: appoinmentsObject,
+      },
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.store.dispatch(userMgmtInitial()); 
+        this.getAllAppoinments();
       }
     });
   }

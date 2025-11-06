@@ -3,11 +3,11 @@ import { CommonConfirmationDialog } from './common-confirmation-dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../../services/api/api-service';
-import { SnackBarService } from '../../services/snack-bar-service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
 import { logout } from '../../ngrx/login/auth.actions';
+import { SnackBarService } from '../../services/snackBar/snack-bar-service';
 
 // --- Mock Implementations ---
 class MockApiService {
@@ -110,7 +110,7 @@ describe('CommonConfirmationDialog', () => {
   }));
 
   it('should handle error in confirmDeleteUser', fakeAsync(() => {
-    const errorResponse = { error: { Message: 'Failed to delete user' } };
+    const errorResponse = { error: { message: 'Failed to delete user' } };
     (apiService.commanDeleteMethod as jasmine.Spy).and.returnValue(throwError(() => errorResponse));
 
     component.confirmDeleteUser();

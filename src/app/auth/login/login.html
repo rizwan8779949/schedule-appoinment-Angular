@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="card">
     <div class="card-body">
-      <h4 class="mb-4">Login</h4>
+      <h4 class="mb-4">Admin Login</h4>
       <form [formGroup]="formGroup" (ngSubmit)="checkLoginDetails()">
         <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
           <mat-label>Username</mat-label>
@@ -10,6 +10,19 @@
           <mat-error>Username is required</mat-error>
           }
         </mat-form-field>
+         <!-- <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Role</mat-label>
+            <mat-select formControlName="userType">
+          @for (role of allRoleList; track role) {
+          <mat-option class="form-select-options" [value]="role">{{
+            role
+          }}</mat-option>
+          }
+        </mat-select>
+          @if (submitted() && formGroup.get('userType')?.hasError('required')) {
+          <mat-error>Role is required</mat-error>
+          }
+        </mat-form-field> -->
         <mat-form-field appearance="outline" class="w-100 form-field-global">
           <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password" />
@@ -23,10 +36,13 @@
           (click)="checkLoginDetails()"
           color="primary"
           class="float-end"
-          [disabled]="loading$ | async"
+          [disabled]="loading$"
         >
-          {{ (loading$ | async) ? 'Loading..' : 'Login' }}
+          {{ loading$ ? 'Loading..' : 'Login' }}
         </button>
+          <div class="mt-5 text-end">
+            <a [routerLink]="[ '/book-appointment' ]">Are you book appointment ?</a>
+        </div>
       </form>
     </div>
   </div>

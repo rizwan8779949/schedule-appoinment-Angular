@@ -111,3 +111,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .form-field-select .mat-mdc-select-value {
   font-size: 13px !important;
 }
+
+.form-field-datePicker .mdc-text-field--outlined .mdc-notched-outline {
+  height: 37px !important;
+}
+.form-field-datePicker .mat-mdc-form-field-icon-suffix {
+  position: relative;
+  top: -6px;
+}
+.form-field-datePicker .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

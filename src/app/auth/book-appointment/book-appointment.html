@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-4">Book Appoinments</h4>
+      <form [formGroup]="formGroup" (ngSubmit)="checkBookingAppoinmentDetails()">
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Patient Name</mat-label>
+          <input matInput formControlName="patientName" maxlength="80" />
+          @if (submitted() && formGroup.get('patientName')?.hasError('required')) {
+          <mat-error>Patient Name is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Patient Contact</mat-label>
+          <input matInput formControlName="patientContact" />
+          @if (submitted() && formGroup.get('patientContact')?.hasError('required')) {
+          <mat-error>Patient Contact is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Disease</mat-label>
+          <textarea matInput formControlName="disease"></textarea>
+          @if (submitted() && formGroup.get('disease')?.hasError('required')) {
+          <mat-error>Disease is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 form-field-global form-field-datePicker mb-2">
+          <mat-label>Appointment Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="validatefrom"
+            formControlName="appointmentDate"
+            (click)="validatefrom.open()"
+            [min]="minDate"
+            class="cursor-pointer"
+            readonly
+          />
+          <mat-datepicker-toggle matSuffix [for]="validatefrom"></mat-datepicker-toggle>
+          <mat-datepicker #validatefrom></mat-datepicker>
+          @if (submitted() && formGroup.get('appointmentDate')?.hasError('required')) {
+          <mat-error>Appointment Date is required</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          (click)="checkBookingAppoinmentDetails()"
+          color="primary"
+          class="float-end"
+          [disabled]="loading$"
+        >
+          {{ loading$ ? 'Loading..' : 'Book' }}
+        </button>
+        <button mat-raised-button class="float-end me-3" [disabled]="loading$" routerLink="/login">
+          Back
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

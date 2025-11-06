@@ -15,7 +15,7 @@ import { CommonConfirmationDialog } from '../common-confirmation-dialog/common-c
 })
 export class CommonHeader {
   constructor(private dialog: MatDialog) {}
-  deleteUserConfirmDialog() {
+  logoutConfirmDialog() {
     const dialogRef = this.dialog.open(CommonConfirmationDialog, {
       disableClose: true,
       data: {
