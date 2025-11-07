@@ -23,8 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-
-  ],
+    RouterLink
+],
   templateUrl: './book-appointment.html',
   styleUrl: './book-appointment.scss',
 })
@@ -36,27 +36,26 @@ export class BookAppointment {
 
   formGroup: FormGroup = this.fb.group({
     patientName: ['', Validators.required],
-    patientContact: ['', [Validators.required,Validators.minLength(10)]],
+    patientContact: ['', [Validators.required, Validators.minLength(10)]],
     disease: ['', Validators.required],
     appointmentDate: [new Date(), Validators.required],
   });
   submitted = signal(false);
   loading$ = false;
-
   minDate = new Date();
-
+  appointmentNo = '';
   constructor() {}
 
   checkBookingAppoinmentDetails() {
     this.submitted.set(true);
-
+    this.appointmentNo = '';
     if (this.formGroup.invalid) return;
     this.loading$ = true;
     this.api.commonPostMethod('appointments/create', this.formGroup.value).subscribe(
       (res: any) => {
         this.loading$ = false;
-        this.snackBarService.success(res?.message??"Saved successfully");
-        this.formGroup.reset()
+        this.snackBarService.success(res?.message ?? 'Saved successfully');
+        this.appointmentNo = res?.data?.appointmentId;
       },
       (err: any) => {
         this.loading$ = false;
@@ -64,10 +63,10 @@ export class BookAppointment {
       }
     );
   }
-  goto(url:string){
-    this.router.navigate([url])
+  goto(url: string) {
+    this.router.navigate([url]);
   }
-   onlyAllowedNumber(event: any) {
+  onlyAllowedNumber(event: any) {
     if (this.onlyAllowedNumberValue(event)) {
       event.preventDefault();
       return false;
@@ -75,13 +74,10 @@ export class BookAppointment {
     return;
   }
   onlyAllowedNumberValue(event: any) {
-    var regex = new RegExp("^[0-9]+$");
-    var key = String.fromCharCode(
-      !event.charCode ? event.which : event.charCode
-    );
+    var regex = new RegExp('^[0-9]+$');
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) return true;
 
     return;
   }
-  
 }

@@ -58,14 +58,14 @@
         </mat-form-field>
           <mat-form-field appearance="outline" class="w-100 form-field-global mb-2 form-field-select">
           <mat-label>Doctor</mat-label>
-          <mat-select formControlName="department">
+          <mat-select formControlName="doctorId">
             @for (doctorItem of deptBasisDoctorList; track $index) {
-            <mat-option class="form-select-options" [value]="doctorItem?.contactNo">{{
+            <mat-option class="form-select-options" [value]="doctorItem?._id">{{
               doctorItem?.name
             }}</mat-option>
             }
           </mat-select>
-          @if (submitted() && formGroup.get('department')?.hasError('required')) {
+          @if (submitted() && formGroup.get('doctorId')?.hasError('required')) {
           <mat-error>Department is required</mat-error>
           }
         </mat-form-field>

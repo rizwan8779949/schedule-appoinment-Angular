@@ -4,14 +4,27 @@ import { LoginSucesssGuardGuard } from './shared/guards/Login-Success-Guards/log
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', loadComponent: () => import('./auth/login/login').then((c) => c.Login) ,
+  {
+    path: 'login',
+    loadComponent: () => import('./auth/login/login').then((c) => c.Login),
     canActivate: [LoginFailedGuardGuard],
   },
   {
     path: 'appointments',
     loadComponent: () =>
-      import('./home/appointment-module/all-appointment-list/all-appointment-list').then((c) => c.AllAppoinmentList),
+      import('./home/appointment-module/all-appointment-list/all-appointment-list').then(
+        (c) => c.AllAppoinmentList
+      ),
     canActivate: [LoginSucesssGuardGuard],
   },
-  { path: 'book-appointment', loadComponent: () => import('./auth/book-appointment/book-appointment').then((c) => c.BookAppointment) },
+  {
+    path: 'book-appointment',
+    loadComponent: () =>
+      import('./auth/book-appointment/book-appointment').then((c) => c.BookAppointment),
+  },
+  {
+    path: 'track-appointment',
+    loadComponent: () =>
+      import('./auth/track-appointment/track-appointment').then((c) => c.TrackAppointment),
+  },
 ];

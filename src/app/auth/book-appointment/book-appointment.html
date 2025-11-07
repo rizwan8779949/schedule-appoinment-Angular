@@ -1,5 +1,6 @@
 <div class="login-container">
   <div class="card">
+    @if (!appointmentNo) {
     <div class="card-body">
       <h4 class="mb-4">Book Appoinments</h4>
       <form [formGroup]="formGroup">
@@ -71,5 +72,16 @@
         </button>
       </form>
     </div>
+    }@else {
+    <div class="card-body">
+      <p>
+        Your appointment has been booked.
+        <br />
+        <b class="text-success">Appointment No: {{ appointmentNo }}</b
+        >.
+        <a [routerLink]="[ '/track-appointment' ]"> click here track </a>
+      </p>
+    </div>
+    }
   </div>
 </div>

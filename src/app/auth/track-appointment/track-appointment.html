@@ -1,0 +1,61 @@
+<div class="login-container">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-4">Track Appoinment</h4>
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+            <mat-label>Appointment ID</mat-label>
+            <input matInput [(ngModel)]="appointmentId" />
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <button
+            mat-raised-button
+            (click)="getAppointmentDetails()"
+            color="primary"
+            [disabled]="isLoading"
+          >
+            {{ isLoading ? 'Loading..' : 'Search' }}
+          </button>
+        </div>
+      </div>
+      @if (singleAppointmentDetails?.appointmentId) {
+
+      <mat-card-content>
+        <p>
+          <strong>Patient Name:</strong> {{ singleAppointmentDetails?.patientName | titlecase }}
+        </p>
+        <p><strong>Disease:</strong> {{ singleAppointmentDetails?.disease }}</p>
+        <p><strong>Appointment ID:</strong> {{ singleAppointmentDetails?.appointmentId }}</p>
+        <p><strong>Contact:</strong> {{ singleAppointmentDetails?.patientContact }}</p>
+        <p><strong>Prescription:</strong> {{ singleAppointmentDetails?.prescription || 'N/A' }}</p>
+        <p>
+          <strong>Department:</strong>
+          {{ singleAppointmentDetails?.doctorId?.department || 'N/A' }}
+        </p>
+        <p>
+          <strong>Doctor Name:</strong>
+          {{ singleAppointmentDetails?.doctorId?.name || 'N/A' }}
+        </p>
+        <p>
+          <strong>Date:</strong> {{ singleAppointmentDetails?.appointmentDate | date : 'medium' }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <span
+          class="badge"
+          [ngClass]="{
+            'bg-warning': singleAppointmentDetails?.status === 'Pending',
+            'bg-primary': singleAppointmentDetails?.status === 'Scheduled',
+            'bg-success': singleAppointmentDetails?.status === 'Completed',
+            'bg-danger': singleAppointmentDetails?.status === 'Cancelled'
+          }"
+        >
+          {{ singleAppointmentDetails?.status }}
+        </span>
+      </mat-card-actions>
+      }
+    </div>
+  </div>
+</div>

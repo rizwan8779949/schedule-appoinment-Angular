@@ -42,10 +42,12 @@ export class AssignDoctorWithAppointment {
   ) {}
   formGroup: FormGroup = this.fb.group({
     patientName: ['', ],
+     appointmentId: ['', ],
     patientContact: [''],
     disease: [''],
     department:['',Validators.required],
     appointmentDate: [],
+    doctorId: [],
   });
   allDepartmentList:any[]=[]
   deptBasisDoctorList:any[]=[]
@@ -71,17 +73,17 @@ export class AssignDoctorWithAppointment {
       patientContact: this.data?.dialogData?.patientContact ?? '',
       disease: this.data?.dialogData?.disease ?? '',
       appointmentDate: this.data?.dialogData?.appointmentDate ?? '',
+      appointmentId: this.data?.dialogData?.appointmentId ?? '',
     });
   }
   assignDoctorAppoinmentDetails() {
     this.submitted.set(true);
     if (this.formGroup.invalid) return;
     this.loading$ = true;
-    this.api.commonPostMethod('appointments/create', this.formGroup.value).subscribe(
+    this.api.commonPostMethod('appointments/scheduleAppointment', this.formGroup.value).subscribe(
       (res: any) => {
         this.loading$ = false;
-        this.snackBarService.success(res?.message ?? 'Assigned successfully');
-
+        this.snackBarService.success(res?.message ?? 'Scheduled successfully');
         this.matDialogRef.close();
       },
       (err: any) => {
