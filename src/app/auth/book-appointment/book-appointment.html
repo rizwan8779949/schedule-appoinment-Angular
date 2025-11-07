@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <h4 class="mb-4">Book Appoinments</h4>
-      <form [formGroup]="formGroup" (ngSubmit)="checkBookingAppoinmentDetails()">
+      <form [formGroup]="formGroup">
         <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
           <mat-label>Patient Name</mat-label>
           <input matInput formControlName="patientName" maxlength="80" />
@@ -12,9 +12,16 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
           <mat-label>Patient Contact</mat-label>
-          <input matInput formControlName="patientContact" />
+          <input
+            matInput
+            formControlName="patientContact"
+            maxlength="10"
+            (keypress)="onlyAllowedNumber($event)"
+          />
           @if (submitted() && formGroup.get('patientContact')?.hasError('required')) {
           <mat-error>Patient Contact is required</mat-error>
+          } @if (submitted() && formGroup.get('patientContact')?.hasError('minlength')) {
+          <mat-error>Patient Contact must be 10 digit</mat-error>
           }
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
@@ -24,7 +31,10 @@
           <mat-error>Disease is required</mat-error>
           }
         </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100 form-field-global form-field-datePicker mb-2">
+        <mat-form-field
+          appearance="outline"
+          class="w-100 form-field-global form-field-datePicker mb-2"
+        >
           <mat-label>Appointment Date</mat-label>
           <input
             matInput
@@ -51,7 +61,12 @@
         >
           {{ loading$ ? 'Loading..' : 'Book' }}
         </button>
-        <button mat-raised-button class="float-end me-3" [disabled]="loading$" routerLink="/login">
+        <button
+          mat-raised-button
+          class="float-end me-3"
+          [disabled]="loading$"
+          (click)="goto('/login')"
+        >
           Back
         </button>
       </form>

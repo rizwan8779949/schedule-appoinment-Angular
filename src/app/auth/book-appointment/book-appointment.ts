@@ -27,8 +27,6 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   templateUrl: './book-appointment.html',
   styleUrl: './book-appointment.scss',
-  providers:[
-    { provide: MAT_DATE_LOCALE, useValue: "en-GB" },]
 })
 export class BookAppointment {
   private fb = inject(FormBuilder);
@@ -38,11 +36,10 @@ export class BookAppointment {
 
   formGroup: FormGroup = this.fb.group({
     patientName: ['', Validators.required],
-    patientContact: ['', Validators.required],
+    patientContact: ['', [Validators.required,Validators.minLength(10)]],
     disease: ['', Validators.required],
-    appointmentDate: ['', Validators.required],
+    appointmentDate: [new Date(), Validators.required],
   });
-  allRoleList = ['User', 'Admin'];
   submitted = signal(false);
   loading$ = false;
 
@@ -55,12 +52,11 @@ export class BookAppointment {
 
     if (this.formGroup.invalid) return;
     this.loading$ = true;
-    this.api.commonPostMethod('user/login', this.formGroup.value).subscribe(
+    this.api.commonPostMethod('appointments/create', this.formGroup.value).subscribe(
       (res: any) => {
         this.loading$ = false;
-        localStorage.setItem('loggedInUserData', JSON.stringify(res));
-        this.snackBarService.success('Logged in successfully');
-        this.router.navigate(['/appointments']);
+        this.snackBarService.success(res?.message??"Saved successfully");
+        this.formGroup.reset()
       },
       (err: any) => {
         this.loading$ = false;
@@ -68,4 +64,24 @@ export class BookAppointment {
       }
     );
   }
+  goto(url:string){
+    this.router.navigate([url])
+  }
+   onlyAllowedNumber(event: any) {
+    if (this.onlyAllowedNumberValue(event)) {
+      event.preventDefault();
+      return false;
+    }
+    return;
+  }
+  onlyAllowedNumberValue(event: any) {
+    var regex = new RegExp("^[0-9]+$");
+    var key = String.fromCharCode(
+      !event.charCode ? event.which : event.charCode
+    );
+    if (!regex.test(key)) return true;
+
+    return;
+  }
+  
 }
