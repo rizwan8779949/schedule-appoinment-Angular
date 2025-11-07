@@ -1,0 +1,92 @@
+<div class="login-container">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-4">Schedule Appoinments</h4>
+      <form [formGroup]="formGroup">
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Patient Name</mat-label>
+          <input matInput formControlName="patientName" maxlength="80" />
+          @if (submitted() && formGroup.get('patientName')?.hasError('required')) {
+          <mat-error>Patient Name is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2">
+          <mat-label>Patient Contact</mat-label>
+          <input
+            matInput
+            formControlName="patientContact"
+            maxlength="10"
+            (keypress)="onlyAllowedNumber($event)"
+          />
+          @if (submitted() && formGroup.get('patientContact')?.hasError('required')) {
+          <mat-error>Patient Contact is required</mat-error>
+          } @if (submitted() && formGroup.get('patientContact')?.hasError('minlength')) {
+          <mat-error>Patient Contact must be 10 digit</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          class="w-100 form-field-global form-field-datePicker mb-2"
+        >
+          <mat-label>Appointment Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="validatefrom"
+            formControlName="appointmentDate"
+            (click)="validatefrom.open()"
+            class="cursor-pointer"
+            readonly
+          />
+          <mat-datepicker-toggle matSuffix [for]="validatefrom"></mat-datepicker-toggle>
+          <mat-datepicker #validatefrom></mat-datepicker>
+          @if (submitted() && formGroup.get('appointmentDate')?.hasError('required')) {
+          <mat-error>Appointment Date is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 form-field-global mb-2 form-field-select">
+          <mat-label>Department</mat-label>
+          <mat-select formControlName="department" (selectionChange)="onSelectChange()">
+            @for (departmentItem of allDepartmentList; track $index) {
+            <mat-option class="form-select-options" [value]="departmentItem">{{
+              departmentItem
+            }}</mat-option>
+            }
+          </mat-select>
+          @if (submitted() && formGroup.get('department')?.hasError('required')) {
+          <mat-error>Department is required</mat-error>
+          }
+        </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 form-field-global mb-2 form-field-select">
+          <mat-label>Doctor</mat-label>
+          <mat-select formControlName="department">
+            @for (doctorItem of deptBasisDoctorList; track $index) {
+            <mat-option class="form-select-options" [value]="doctorItem?.contactNo">{{
+              doctorItem?.name
+            }}</mat-option>
+            }
+          </mat-select>
+          @if (submitted() && formGroup.get('department')?.hasError('required')) {
+          <mat-error>Department is required</mat-error>
+          }
+        </mat-form-field>
+        <button
+          mat-raised-button
+          (click)="assignDoctorAppoinmentDetails()"
+          color="primary"
+          class="float-end"
+          [disabled]="loading$"
+        >
+          {{ loading$ ? 'Loading..' : 'Assign' }}
+        </button>
+        <button
+          mat-raised-button
+          class="float-end me-3"
+          [disabled]="loading$"
+          (click)="closeDialog()"
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

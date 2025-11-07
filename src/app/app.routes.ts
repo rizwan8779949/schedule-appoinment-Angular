@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: 'appointments',
     loadComponent: () =>
-      import('./home/all-appointment-list/all-appointment-list').then((c) => c.AllAppoinmentList),
+      import('./home/appointment-module/all-appointment-list/all-appointment-list').then((c) => c.AllAppoinmentList),
     canActivate: [LoginSucesssGuardGuard],
   },
   { path: 'book-appointment', loadComponent: () => import('./auth/book-appointment/book-appointment').then((c) => c.BookAppointment) },

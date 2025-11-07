@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonHeader } from '../../shared/components/common-header/common-header';
+import { CommonHeader } from '../../../shared/components/common-header/common-header';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ApiService } from '../../shared/services/api/api-service';
+import { ApiService } from '../../../shared/services/api/api-service';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CommonConfirmationDialog } from '../../shared/components/common-confirmation-dialog/common-confirmation-dialog';
+import { CommonConfirmationDialog } from '../../../shared/components/common-confirmation-dialog/common-confirmation-dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { select, Store } from '@ngrx/store';
-import { SnackBarService } from '../../shared/services/snackBar/snack-bar-service';
-import { AssigAppoinment } from '../assig-appoinment/assig-appoinment';
+import { SnackBarService } from '../../../shared/services/snackBar/snack-bar-service';
+import { AssignDoctorWithAppointment } from '../assign-doctor-with-appointment/assign-doctor-with-appointment';
 
 @Component({
   selector: 'app-all-users-list',
@@ -60,11 +60,12 @@ export class AllAppoinmentList implements OnInit {
   }
 
   assignAppoinmentsConfirmDialog(appoinmentsObject: any) {
-    const dialogRef = this.dialog.open(AssigAppoinment, {
+    const dialogRef = this.dialog.open(AssignDoctorWithAppointment, {
       disableClose: true,
       data: {
         dialogData: appoinmentsObject,
       },
+      width:'400px'
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
