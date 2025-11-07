@@ -12,6 +12,7 @@ import { CommonConfirmationDialog } from '../../shared/components/common-confirm
 import { MatIconModule } from '@angular/material/icon';
 import { select, Store } from '@ngrx/store';
 import { SnackBarService } from '../../shared/services/snackBar/snack-bar-service';
+import { AssigAppoinment } from '../assig-appoinment/assig-appoinment';
 
 @Component({
   selector: 'app-all-users-list',
@@ -40,12 +41,14 @@ export class AllAppoinmentList implements OnInit {
     private snackBarService: SnackBarService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllAppoinments()
+  }
 
   getAllAppoinments() {
     this.dataSourceAppoinmentList.data = [];
     this.isLoading = true;
-    this.api.commonGetMethod('appoinments/getAllAppoinments', {}).subscribe(
+    this.api.commonGetMethod('appointments/getAllAppointments', {}).subscribe(
       (res) => {
         this.dataSourceAppoinmentList.data = res?.data;
         this.isLoading = false;
@@ -57,10 +60,9 @@ export class AllAppoinmentList implements OnInit {
   }
 
   assignAppoinmentsConfirmDialog(appoinmentsObject: any) {
-    const dialogRef = this.dialog.open(CommonConfirmationDialog, {
+    const dialogRef = this.dialog.open(AssigAppoinment, {
       disableClose: true,
       data: {
-        dialogType: 'userDashboard',
         dialogData: appoinmentsObject,
       },
     });
