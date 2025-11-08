@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
-  baseUrl = 'http://localhost:8080/api/';
+  baseUrl = 'https://onlinedocappointmentapi.vercel.app/api/';
   commonGetMethod(url: string, queryParams: any): Observable<any> {
     const endPoint = this.baseUrl + url;
     return this.http.get(endPoint, { params: queryParams });
